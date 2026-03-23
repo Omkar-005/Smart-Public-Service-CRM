@@ -17,7 +17,8 @@ export default function TrackComplaint() {
       API.get(`/complaints/track/${id}`, { params: { email: filerEmail } })
         .then(res => { setComplaint(res.data.data); setLoading(false); })
         .catch(() => { setError('Complaint not found.'); setLoading(false); });
-    }  }
+    }
+  }
 }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
  const handleTrack = async () => {
