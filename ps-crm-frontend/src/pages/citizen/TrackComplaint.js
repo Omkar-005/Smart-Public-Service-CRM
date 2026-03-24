@@ -7,44 +7,56 @@ export default function TrackComplaint() {
   const navigate = useNavigate();
   const { lang } = useLang();
   const [complaintId, setComplaintId] = useState('');
-  const filerEmail = params.get('email') || '';  if (id) {
-    id = id.toUpperCase();
-    if (!id.startsWith('CMP-')) id = `CMP-${id}`;
-    setComplaintId(id);
-    setEmail(filerEmail);
-    if (filerEmail) {
-      setLoading(true);
-      API.get(`/complaints/track/${id}`, { params: { email: filerEmail } })
-        .then(res => { setComplaint(res.data.data); setLoading(false); })
-        .catch(() => { setError('Complaint not found.'); setLoading(false); });
-    }
-  }
-}, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const [email, setEmail] = useState('');
+  const [complaint, setComplaint] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [lightbox, setLightbox] = useState(null);
 
- const handleTrack = async () => {
-  let input = complaintId.trim().toUpperCase();
-  const normalizedEmail = email.trim().toLowerCase();
-  if (!input || !normalizedEmail) {
-    setError(lang === 'hi'
-      ? 'कृपया शिकायत आईडी और ईमेल दोनों दर्ज करें।'
-      : 'Please enter both complaint ID and filer email.');
-    return;
-  }  // Auto-prefix CMP- if user typed just the number part
-  if (!input.startsWith('CMP-')) input = `CMP-${input}`;
-  setLoading(true);
-  setError('');
-  setComplaint(null);
-  try {
-    const res = await API.get(`/complaints/track/${input}`, {
-      params: { email: normalizedEmail },
-    });
-    setComplaint(res.data.data);
-  } catch (err) {
-    setError(lang === 'hi'
-      ? 'शिकायत नहीं मिली। कृपया शिकायत आईडी और फाइलर ईमेल जांचें।'
-      : 'Complaint not found. Please check the complaint ID and filer email.');  }
-  setLoading(false);
-};
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    let id = params.get('id');
+    const filerEmail = params.get('email') || '';
+    if (id) {
+      id = id.toUpperCase();
+      if (!id.startsWith('CMP-')) id = `CMP-${id}`;
+      setComplaintId(id);
+      setEmail(filerEmail);
+      if (filerEmail) {
+        setLoading(true);
+        API.get(`/complaints/track/${id}`, { params: { email: filerEmail } })
+          .then(res => { setComplaint(res.data.data); setLoading(false); })
+          .catch(() => { setError('Complaint not found.'); setLoading(false); });
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleTrack = async () => {
+    let input = complaintId.trim().toUpperCase();
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!input || !normalizedEmail) {
+      setError(lang === 'hi'
+        ? 'कृपया शिकायत आईडी और ईमेल दोनों दर्ज करें।'
+        : 'Please enter both complaint ID and filer email.');
+      return;
+    }
+    // Auto-prefix CMP- if user typed just the number part
+    if (!input.startsWith('CMP-')) input = `CMP-${input}`;
+    setLoading(true);
+    setError('');
+    setComplaint(null);
+    try {
+      const res = await API.get(`/complaints/track/${input}`, {
+        params: { email: normalizedEmail },
+      });
+      setComplaint(res.data.data);
+    } catch (err) {
+      setError(lang === 'hi'
+        ? 'शिकायत नहीं मिली। कृपया शिकायत आईडी और फाइलर ईमेल जांचें।'
+        : 'Complaint not found. Please check the complaint ID and filer email.');
+    }
+    setLoading(false);
+  };
 
   const handlePrint = () => window.print();
 
@@ -186,8 +198,26 @@ export default function TrackComplaint() {
                 onKeyDown={e => e.key === 'Enter' && handleTrack()}
               />
             </div>
+            <div style={{ flex: 1 }}>
+              <label style={styles.label}>{lang === 'hi' ? 'फाइलर ईमेल' : 'Filer Email'}</label>
+              <input
+                style={styles.input}
+                type="email"
+                placeholder={lang === 'hi' ? 'शिकायत दर्ज करने वाला ईमेल' : 'Email used while filing the complaint'}
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleTrack()}
+              />
+            </div>
+            <button style={styles.btnTrack} onClick={handleTrack} disabled={loading}>
+              {loading ? tx('⏳ Searching...', lang) : tx('🔍 Track', lang)}
+            </button>
+          </div>
+          <div style={{ fontSize: 12, color: '#9BADC0', marginTop: 10 }}>
+            💡 {lang === 'hi'
               ? 'डुप्लीकेट शिकायतों को सही उपयोगकर्ता से जोड़ने के लिए शिकायत आईडी के साथ वही ईमेल दर्ज करें जिससे शिकायत की गई थी'
-              : 'To identify the correct filer for grouped duplicate complaints, enter the same email used while filing along with the complaint ID'}          </div>
+              : 'To identify the correct filer for grouped duplicate complaints, enter the same email used while filing along with the complaint ID'}
+          </div>
           {error && <div style={styles.error}>{error}</div>}
         </div>
 
@@ -278,7 +308,8 @@ export default function TrackComplaint() {
                           ? `यह शिकायत ${locationText} में ${category} श्रेणी के अंतर्गत ${title} से संबंधित प्रतीत होती है और इसे ${urgency} प्राथमिकता के रूप में दर्ज किया गया है। क्षेत्रीय अधिकारी को स्थल का निरीक्षण करके समस्या के कारण की पुष्टि करनी चाहिए और आवश्यक सुधारात्मक कार्रवाई करनी चाहिए।`
                           : `This complaint appears to concern ${title.toLowerCase()} under the ${category} category at ${locationText} and has been marked as ${urgency} priority. The field officer should inspect the site, verify the cause of the issue, and take the necessary corrective action on the ground.`;
                       })()}
-                    </div>                  </div>
+                    </div>
+                  </div>
 
                   {/* Resolution Note */}
                   {complaint.resolution && (

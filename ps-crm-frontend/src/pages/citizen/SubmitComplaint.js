@@ -29,6 +29,8 @@ const ALL_CATEGORIES = Object.keys(CATEGORY_MAP);
 
 const WARDS = ['A','B','C','D','E','F','G','H','I','J','K','L','M',
                'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+// ── useVoice hook (Mayur's feature) ─────────────────────────────────────────
 function useVoice(lang, onResult) {
   const [listening, setListening] = useState(false);
   const recRef = useRef(null);
@@ -106,7 +108,6 @@ function VoiceInput({ value, onChange, placeholder, lang, multiline = false, sty
   );
 }
 
->>>>>>> 50762842ae020949554923b9c70291784a52c3e7
 export default function SubmitComplaint() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -150,6 +151,7 @@ export default function SubmitComplaint() {
     debounceRef.current = setTimeout(() => autoClassify(form.title, form.description), 800);
     return () => clearTimeout(debounceRef.current);
   }, [form.title, form.description]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleFiles = (files) => {
     const allowed = Array.from(files).filter(f => f.type.startsWith('image/'));
     if (images.length + allowed.length > 3) {
@@ -178,6 +180,12 @@ export default function SubmitComplaint() {
       setError(lang === 'hi' ? 'कृपया वार्ड चुनें।' : 'Please select your Ward.');
       return;
     }
+    setLoading(true); setError('');
+    try {
+      const res = await API.post('/complaints', {
+        ...form,
+        images: images.map(img => ({ data: img.data, name: img.name, type: img.type })),
+      });
       setSuccess(res.data.data);
     } catch (err) {
       setError(err.response?.data?.message || (lang === 'hi' ? 'शिकायत जमा नहीं हो सकी' : 'Failed to submit complaint'));
@@ -222,7 +230,6 @@ export default function SubmitComplaint() {
                     {r.v}
                   </span>
                 </div>
-                </div>
               ))}
             </div>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 24 }}>
@@ -246,7 +253,57 @@ export default function SubmitComplaint() {
   // ── Main Form ────────────────────────────────────────────────────────────
   return (
     <div style={styles.page}>
->>>>>>> 50762842ae020949554923b9c70291784a52c3e7
+      <style>{`
+        @keyframes micpulse {
+          0%   { box-shadow: 0 0 0 0 rgba(220,38,38,0.5); }
+          70%  { box-shadow: 0 0 0 8px rgba(220,38,38,0); }
+          100% { box-shadow: 0 0 0 0 rgba(220,38,38,0); }
+        }
+      `}</style>
+
+      <Header navigate={navigate} lang={lang} />
+      <div style={styles.container}>
+        <div style={styles.pageHead}>
+          <h1 style={styles.pageTitle}>{tx('📝 File a Complaint', lang)}</h1>
+          <p style={styles.pageSub}>{tx('Describe your issue — AI will automatically detect the category and urgency', lang)}</p>
+        </div>
+
+        <div style={styles.grid}>
+          <div>
+            <div style={styles.card}>
+              <div style={styles.cardTitle}>{tx('📋 Complaint Details', lang)}</div>
+              {error && <div style={styles.error}>{error}</div>}
+
+              {/* Title — with voice (Mayur) */}
+              <div style={styles.formGroup}>
+                <label style={styles.label}>{tx('Complaint Title *', lang)}</label>
+                <VoiceInput
+                  lang={lang}
+                  value={form.title}
+                  onChange={(val) => setForm(f => ({ ...f, title: val }))}
+                  placeholder={tx('Brief title of your complaint', lang)}
+                />
+              </div>
+
+              {/* Description — with voice (Mayur) */}
+              <div style={styles.formGroup}>
+                <label style={styles.label}>{tx('Complaint Description *', lang)}</label>
+                <VoiceInput
+                  lang={lang}
+                  multiline
+                  value={form.description}
+                  onChange={(val) => setForm(f => ({ ...f, description: val }))}
+                  placeholder={tx('Describe your issue in detail — AI will auto-detect category and urgency...', lang)}
+                />
+              </div>
+
+              {/* AI Result Box */}
+              {aiLoading && (
+                <div style={{ ...styles.aiBox, opacity: 0.7 }}>
+                  <div style={styles.aiTitle}>{tx('🧠 AI Analyzing...', lang)}</div>
+                  <div style={{ fontSize: 13, color: '#6B7FA3' }}>{tx('Detecting category and urgency...', lang)}</div>
+                </div>
+              )}
               {!aiLoading && aiResult && (
                 <div style={styles.aiBox}>
                   <div style={styles.aiTitle}>{tx('🧠 AI Auto-Classification', lang)}</div>
@@ -278,38 +335,6 @@ export default function SubmitComplaint() {
 
               <div style={styles.formRow}>
                 <div style={styles.formGroup}>
-<<<<<<< HEAD
-                  <label style={styles.label}>
-                    {aiResult ? tx('Category (AI detected ✨)', lang) : `${tx('Category', lang)} *`}
-                  </label>
-                  <select style={{ ...styles.input, borderColor: aiResult ? '#16A34A' : '#D8E2F0' }}
-                    value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}>
-                    {ALL_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                </div>
-                <div style={styles.formGroup}>
-                  <label style={styles.label}>
-                    {aiResult ? tx('Urgency (AI detected ✨)', lang) : `${tx('Urgency', lang)} *`}
-                  </label>
-                  <select style={{ ...styles.input, borderColor: aiResult ? '#16A34A' : '#D8E2F0' }}
-                    value={form.urgency} onChange={e => setForm(f => ({ ...f, urgency: e.target.value }))}>
-                    {['Low', 'Medium', 'High'].map(u => <option key={u} value={u}>{tx(u, lang)}</option>)}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Image Evidence Upload */}
-            <div style={{ ...styles.card, marginTop: 16 }}>
-              <div style={styles.cardTitle}>
-                {tx('📸 Photo Evidence', lang)}{' '}
-                <span style={{ fontSize: 12, color: '#6B7FA3', fontWeight: 400 }}>
-                  {tx('(Optional — max 3 images)', lang)}
-                </span>
-              </div>
-              <div
-                style={{ ...styles.dropZone, ...(dragOver ? styles.dropZoneActive : {}) }}
-=======
                   <label style={styles.label}>{aiResult ? tx('Category (AI detected ✨)', lang) : `${tx('Category', lang)} *`}</label>
                   <select style={{ ...styles.input, borderColor: aiResult ? '#16A34A' : '#D8E2F0' }}
                     value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}>
@@ -337,7 +362,8 @@ export default function SubmitComplaint() {
                 {tx('📸 Photo Evidence', lang)}{' '}
                 <span style={{ fontSize: 12, color: '#6B7FA3', fontWeight: 400 }}>{tx('(Optional — max 3 images)', lang)}</span>
               </div>
-              <div style={{ ...styles.dropZone, ...(dragOver ? styles.dropZoneActive : {}) }}                onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+              <div style={{ ...styles.dropZone, ...(dragOver ? styles.dropZoneActive : {}) }}
+                onDragOver={e => { e.preventDefault(); setDragOver(true); }}
                 onDragLeave={() => setDragOver(false)}
                 onDrop={e => { e.preventDefault(); setDragOver(false); handleFiles(e.dataTransfer.files); }}
                 onClick={() => images.length < 3 && fileInputRef.current.click()}>
@@ -345,7 +371,8 @@ export default function SubmitComplaint() {
                 <div style={{ fontSize: 40, marginBottom: 10 }}>📷</div>
                 <div style={styles.dropText}>{dragOver ? tx('Drop images here!', lang) : tx('Click or drag & drop images here', lang)}</div>
                 <div style={styles.dropSub}>{tx('JPG, PNG, WEBP · Max 3 images · 5MB each', lang)}</div>
-              </div>              {images.length > 0 && (
+              </div>
+              {images.length > 0 && (
                 <div style={styles.previewGrid}>
                   {images.map((img, i) => (
                     <div key={i} style={styles.previewCard}>
@@ -398,7 +425,8 @@ export default function SubmitComplaint() {
                   </select>
                   {!form.location.ward && (
                     <div style={{ fontSize: 11, color: '#E8620A', marginTop: 4 }}>
-                      {lang === 'hi' ? '📍 वार्ड चुनें — सार्वजनिक डैशबोर्ड के लिए जरूरी' : '📍 Required for Ward-wise data on Public Dashboard'}                    </div>
+                      {lang === 'hi' ? '📍 वार्ड चुनें — सार्वजनिक डैशबोर्ड के लिए जरूरी' : '📍 Required for Ward-wise data on Public Dashboard'}
+                    </div>
                   )}
                 </div>
               </div>
@@ -431,7 +459,8 @@ export default function SubmitComplaint() {
               onClick={handleSubmit} disabled={loading || aiLoading}>
               {loading ? tx('⏳ Submitting...', lang) : images.length > 0
                 ? (lang === 'hi' ? `✅ ${images.length} फ़ोटो के साथ शिकायत जमा करें` : `✅ Submit Complaint with ${images.length} Photo${images.length > 1 ? 's' : ''}`)
-                : tx('✅ Submit Complaint', lang)}            </button>
+                : tx('✅ Submit Complaint', lang)}
+            </button>
           </div>
 
           {/* Right Panel */}
@@ -456,7 +485,8 @@ export default function SubmitComplaint() {
             <div style={{ ...styles.card, marginTop: 16 }}>
               <div style={styles.cardTitle}>{tx('ℹ️ How It Works', lang)}</div>
               {[
-                { step: '01', title: 'Describe Your Issue',  desc: 'Type or speak your complaint' },                { step: '02', title: 'AI Auto-Classifies',   desc: 'Category & urgency detected instantly' },
+                { step: '01', title: 'Describe Your Issue',  desc: 'Type or speak your complaint' },
+                { step: '02', title: 'AI Auto-Classifies',   desc: 'Category & urgency detected instantly' },
                 { step: '03', title: 'Add Photo Evidence',   desc: 'Attach photos for faster resolution' },
                 { step: '04', title: 'Track & Get Feedback', desc: 'Monitor status and rate the resolution' },
               ].map((s, i) => (
@@ -512,7 +542,8 @@ function Header({ navigate, lang }) {
           <button style={{ padding: '7px 16px', borderRadius: 8, border: '1.5px solid #0F2557', color: '#0F2557', background: 'transparent', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
             onClick={() => navigate('/citizen/track')}>{tx('🔍 Track Complaint', lang)}</button>
           <button style={{ padding: '7px 16px', borderRadius: 8, border: 'none', background: '#E8620A', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
-            onClick={() => navigate('/login')}>{tx('Login', lang)} →</button>        </div>
+            onClick={() => navigate('/login')}>{tx('Login', lang)} →</button>
+        </div>
       </header>
     </>
   );
