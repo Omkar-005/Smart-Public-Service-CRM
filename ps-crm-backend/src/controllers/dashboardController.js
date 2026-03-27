@@ -1,6 +1,5 @@
 const Complaint = require('../models/Complaint');
 const Feedback = require('../models/Feedback');
-const Feedback = require('../models/Feedback');
 
 const getDashboardStats = async (req, res) => {
   try {
