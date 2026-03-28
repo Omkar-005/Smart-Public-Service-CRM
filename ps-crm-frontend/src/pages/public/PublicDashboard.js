@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { useLang, tx } from '../../context/LanguageContext';
 import LanguageToggle from '../../components/layout/LanguageToggle';
+import ComplaintHeatmap from '../../components/ui/ComplaintHeatmap';
 
 const COLORS = ['#0F2557', '#E8620A', '#1B7A3E', '#1565C0', '#8B5CF6', '#DB2777'];
 const ALL_WARDS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
@@ -249,6 +250,9 @@ export default function PublicDashboard() {
                     </ResponsiveContainer>
                   </div>
                 </div>
+                <section style={{ marginTop: '32px' }}>
+                  <ComplaintHeatmap />
+                </section>
                 <div style={styles.accountCard}>
                   <h2 style={styles.accountTitle}>{tx('🏛️ Government Accountability Metrics', lang)}</h2>
                   <div style={styles.accountGrid}>

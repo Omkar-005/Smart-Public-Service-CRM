@@ -6,6 +6,7 @@ const cors    = require('cors');
 const connectDB       = require('./src/config/db');
 const { startSLAService } = require('./src/config/slaService');
 
+
 connectDB();
 
 const app = express();
@@ -25,13 +26,15 @@ const authRoutes       = require('./src/routes/authRoutes');
 const complaintRoutes  = require('./src/routes/complaintRoutes');
 const dashboardRoutes  = require('./src/routes/dashboardRoutes');
 const feedbackRoutes   = require('./src/routes/feedbackRoutes');
-const chatbotRoutes    = require('./src/routes/chatbotRoutes');
+const chatbotRoutes = require('./src/routes/chatbotRoutes');
+const heatmapRoutes = require('./src/routes/heatmapRoutes');
 
 app.use('/api/auth',       authRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/dashboard',  dashboardRoutes);
 app.use('/api/feedback',   feedbackRoutes);
-app.use('/api/chatbot',    chatbotRoutes);
+app.use('/api/chatbot', chatbotRoutes);
+app.use('/api/heatmap', heatmapRoutes);
 
 // ─── Start server ─────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
