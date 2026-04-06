@@ -559,6 +559,7 @@ export function Sidebar({ navigate, logout, user, active }) {
     { icon: '', label: 'All Complaints',   path: '/admin/complaints', key: 'complaints' },
     { icon: '‍', label: 'Officers',       path: '/admin/officers',   key: 'officers' },
     { icon: '', label: 'Analytics',        path: '/admin/analytics',  key: 'analytics' },
+    { icon: '', label: 'My Profile',     path: '/admin/profile',    key: 'profile' },
     { icon: '', label: 'Public Dashboard', path: '/public',           key: 'public' },
     { icon: '', label: 'Notifications',    path: '/notifications',    key: 'notifications' },
   ];

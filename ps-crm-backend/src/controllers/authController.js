@@ -219,4 +219,48 @@ const assignRole = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getOfficers, getPendingOfficers, approveOfficer, rejectOfficer, assignRole };
+const updateProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { phone, ward, department, password, newPassword } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    // If changing password, verify old password first
+    if (newPassword) {
+      if (!password || !await user.matchPassword(password)) {
+        return res.status(400).json({ success: false, message: 'Current password is incorrect.' });
+      }
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+    }
+
+    // Update other fields
+    if (phone) user.phone = phone;
+    if (ward) user.ward = ward;
+    if (department) user.department = department;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully.',
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        ward: user.ward,
+        department: user.department,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { register, login, getOfficers, getPendingOfficers, approveOfficer, rejectOfficer, assignRole, updateProfile };

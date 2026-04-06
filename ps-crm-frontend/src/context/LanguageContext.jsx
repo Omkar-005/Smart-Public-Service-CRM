@@ -127,7 +127,6 @@ export const t = {
   // ── Citizen Dashboard ────────────────────────────────────────────────────
   'Total Filed': { hi: 'कुल दर्ज' },
   'New Complaint': { hi: 'नई शिकायत' },
-  'New Complaint': { hi: 'नई शिकायत' },
   'Report a new issue': { hi: 'नई समस्या रिपोर्ट करें' },
   'Check complaint status': { hi: 'शिकायत की स्थिति जांचें' },
   'Rate resolved complaints': { hi: 'हल की गई शिकायतों को रेट करें' },
@@ -138,13 +137,9 @@ export const t = {
   'No complaints yet': { hi: 'अभी कोई शिकायत नहीं' },
   'File your first complaint to get started': { hi: 'शुरू करने के लिए अपनी पहली शिकायत दर्ज करें' },
   'File First Complaint': { hi: 'पहली शिकायत दर्ज करें' },
-  'Track': { hi: 'ट्रैक करें' },
-  'Feedback': { hi: 'फ़ीडबैक' },
-  'Citizen': { hi: 'नागरिक' },
   'SLA:': { hi: 'एसएलए:' },
 
   // ── Submit Complaint ─────────────────────────────────────────────────────
-  'File a Complaint': { hi: 'शिकायत दर्ज करें' },
   'Describe your issue — AI will automatically detect the category and urgency': { hi: 'अपनी समस्या बताएं — AI स्वतः श्रेणी और जरूरी प्रकृति का पता लगाएगा' },
   'Complaint Details': { hi: 'शिकायत विवरण' },
   'Complaint Title *': { hi: 'शिकायत का शीर्षक *' },
@@ -179,7 +174,6 @@ export const t = {
   '10-digit mobile number': { hi: '10 अंकों का मोबाइल नंबर' },
   'Submit Complaint': { hi: 'शिकायत जमा करें' },
   'Submitting...': { hi: 'जमा हो रहा है...' },
-  'AI Auto-Classification': { hi: 'AI स्वतः वर्गीकरण' },
   'Just describe your complaint — our AI automatically detects the category, department, and urgency level for you.': { hi: 'बस अपनी शिकायत बताएं — हमारा AI आपके लिए श्रेणी, विभाग और जरूरी स्तर स्वतः पहचानेगा।' },
   'How It Works': { hi: 'यह कैसे काम करता है' },
   'Describe Your Issue': { hi: 'अपनी समस्या बताएं' },
@@ -262,7 +256,6 @@ export const t = {
   'Thank You for Your Feedback!': { hi: 'आपके फ़ीडबैक के लिए धन्यवाद!' },
   'Your feedback helps us improve public services for everyone.': { hi: 'आपका फ़ीडबैक सभी के लिए सार्वजनिक सेवाएं बेहतर बनाने में मदद करता है।' },
   'My Dashboard': { hi: 'मेरा डैशबोर्ड' },
-  'New Complaint': { hi: 'नई शिकायत' },
   'Very Poor': { hi: 'बहुत खराब' },
   'Poor': { hi: 'खराब' },
   'Average': { hi: 'औसत' },
@@ -281,7 +274,6 @@ export const t = {
   'Recent Complaints': { hi: 'हाल की शिकायतें' },
   'View All ': { hi: 'सभी देखें ' },
   'Failed to load dashboard data. Make sure backend is running.': { hi: 'डैशबोर्ड डेटा लोड नहीं हो सका। बैकएंड चल रहा है सुनिश्चित करें।' },
-  'Citizen': { hi: 'नागरिक' },
   'Date': { hi: 'दिनांक' },
 
   // ── Complaints List ──────────────────────────────────────────────────────
@@ -479,6 +471,35 @@ export const t = {
   'View Complaint ': { hi: 'शिकायत देखें ' },
   'Portal': { hi: 'पोर्टल' },
   'Administrator': { hi: 'प्रशासक' },
+
+  // ── Profile ──────────────────────────────────────────────────────────────
+  'My Profile': { hi: 'मेरी प्रोफ़ाइल' },
+  'Personal Information': { hi: 'व्यक्तिगत जानकारी' },
+  'Security': { hi: 'सुरक्षा' },
+  'Manage your account information and security settings': { hi: 'अपनी खाता जानकारी और सुरक्षा सेटिंग प्रबंधित करें' },
+  'Name': { hi: 'नाम' },
+  'Name cannot be changed': { hi: 'नाम नहीं बदला जा सकता' },
+  'Email cannot be changed': { hi: 'ईमेल नहीं बदला जा सकता' },
+  'Enter phone number': { hi: 'फ़ोन नंबर दर्ज करें' },
+  'Enter your ward': { hi: 'अपना वार्ड दर्ज करें' },
+  'Enter your department': { hi: 'अपना विभाग दर्ज करें' },
+  'Save Changes': { hi: 'परिवर्तन सहेजें' },
+  'Saving...': { hi: 'सहेजा जा रहा है...' },
+  'Current Password': { hi: 'वर्तमान पासवर्ड' },
+  'Enter current password': { hi: 'वर्तमान पासवर्ड दर्ज करें' },
+  'New Password': { hi: 'नया पासवर्ड' },
+  'Enter new password': { hi: 'नया पासवर्ड दर्ज करें' },
+  'Confirm New Password': { hi: 'नए पासवर्ड की पुष्टि करें' },
+  'Confirm new password': { hi: 'नए पासवर्ड की पुष्टि करें' },
+  'Change Password': { hi: 'पासवर्ड बदलें' },
+  'Updating...': { hi: 'अपडेट हो रहा है...' },
+  'Profile updated successfully!': { hi: 'प्रोफ़ाइल सफलतापूर्वक अपडेट किया गया!' },
+  'Password changed successfully!': { hi: 'पासवर्ड सफलतापूर्वक बदल दिया गया!' },
+  'Failed to update profile': { hi: 'प्रोफ़ाइल अपडेट करने में विफल' },
+  'Failed to change password': { hi: 'पासवर्ड बदलने में विफल' },
+  'Please enter current password': { hi: 'वर्तमान पासवर्ड दर्ज करें' },
+  'Please enter new password': { hi: 'नया पासवर्ड दर्ज करें' },
+  'New passwords do not match': { hi: 'नए पासवर्ड मेल नहीं खाते' },
 };// ─── Helper function ───────────────────────────────────────────────────────────
 export function tx(key, lang) {
   if (lang === 'en') return key;

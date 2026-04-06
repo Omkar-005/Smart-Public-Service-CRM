@@ -621,7 +621,6 @@ export default function Chatbot() {
   const [typing, setTyping]   = useState(false);
   const [lang, setLang]       = useState(null);
   const [currentStep, setCurrentStep] = useState('LANG_SELECT');
-  const [unread, setUnread]   = useState(1);
   const sessionId             = useRef(getSessionId());
   const messagesEndRef        = useRef(null);
   const inputRef              = useRef(null);
@@ -630,19 +629,18 @@ export default function Chatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  useEffect(() => { scrollToBottom(); }, [messages, typing]);
-
-  useEffect(() => {
-    if (open) {
-      setUnread(0);
-      if (messages.length === 0) initChat();
-      setTimeout(() => inputRef.current?.focus(), 200);
-    }
-  }, [open]);
-
   const initChat = async () => {
     await sendToBot('', { action: 'reset' });
   };
+
+  useEffect(() => { scrollToBottom(); }, [messages, typing, scrollToBottom]);
+
+  useEffect(() => {
+    if (open) {
+      if (messages.length === 0) initChat();
+      setTimeout(() => inputRef.current?.focus(), 200);
+    }
+  }, [open, messages.length]);
 
   const addMessage = (role, content) => {
     setMessages(prev => [...prev, { role, content, time: fmtTime(), id: Date.now() + Math.random() }]);

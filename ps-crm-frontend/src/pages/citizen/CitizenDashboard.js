@@ -323,6 +323,7 @@ export default function CitizenDashboard() {
             { icon: '', label: 'My Dashboard',     path: '/citizen/dashboard', active: true },
             { icon: '', label: 'File Complaint',   path: '/citizen/submit' },
             { icon: '', label: 'Track Complaint',  path: '/citizen/track' },
+            { icon: '', label: 'My Profile',      path: '/citizen/profile' },
             { icon: '', label: 'Public Dashboard', path: '/public' },
             { icon: '', label: 'Notifications',    path: '/notifications' },
           ].map((l, i) => (

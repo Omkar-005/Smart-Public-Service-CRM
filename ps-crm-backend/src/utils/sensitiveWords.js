@@ -6,27 +6,24 @@ const SENSITIVE_WORDS = [
   'bitched', 'bitching', 'bitch', 'asshat', 'jackass', 'douchebag',
   
   // Hindi/Devanagari offensive words (transliteration)
-  'gaali', 'gali', 'randii', 'randi', 'bhenchod', 'maderchod', 'chutiya',
+  'gaali', 'randii', 'randi', 'bhenchod', 'maderchod', 'chutiya',
   'chod', 'lund', 'rand', 'harami', 'haram', 'jhandu', 'jhantu', 'nalayak',
-  'bekar', 'gadha', 'gandu', 'kutte', 'suar', 'ullu', 'chirkut', 'buddu',
-  'hookah', 'hathkandi', 'chapri', 'chamcha', 'makkhichaps', 'jhagda',
-  'bebakof', 'badmash', 'badmaash', 'gundagardi', 'lath', 'pithau',
-  'ghadha', 'khichdi', 'makhmali', 'makdi', 'chunnu', 'munnu',
-  'badmaashi', 'gundaism', 'jhunjhuna', 'chappal', 'chatpati',
+   'gadha', 'gandu',  'chirkut', 'buddu',
+  'hookah', 'hathkandi', 'chapri', 'chamcha', 'makkhichaps',
+  'bebakof', 'badmash', 'badmaash', 'gundagardi', 'lath', 'pithau','khichdi', 'makhmali', 'makdi', 'chunnu', 'munnu',
+  'gundaism', 'jhunjhuna', 'chappal', 'chatpati',
   
   // Regional variations
-  'oye', 'sadda', 'pagal', 'paagal', 'kutta', 'soor', 'gadhe',
-  'jhunjhunaa', 'chotaa', 'bhaagna', 'marwana', 'pitna', 'kata',
-  'doglapan', 'bewakoof', 'bewkoof', 'nakli', 'naqli', 'nakara',
+  'oye', 'sadda', 'pagal', 'paagal',
+  'jhunjhunaa', 'marwana', 'pitna', 
+  'doglapan', 'bewakoof', 'bewkoof', 'nakara',
   
   // Slang and abusive references
   'teri maa', 'tera baap', 'bap re', 'aajao', 'aa jaao',
-  'sale', 'kamina', 'kameena', 'dalaal', 'bhikari', 'nakaam',
-  'nakamyaab', 'nateeja', 'natije', 'jaanwar', 'shaitan',
+  'sale', 'kamina', 'kameena', 'dalaal', 'nakaam',
+  'nakamyaab', 'shaitan',
   
-  // Sexual/explicit reference terms
-  'jhagra', 'gunda', 'dacoit', 'lootera', 'chhor', 'chor', 'pakda',
-  'marpit', 'chhanp', 'maarpeet', 'marpeet',
+
 ];
 
 /**

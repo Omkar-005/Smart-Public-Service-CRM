@@ -195,24 +195,52 @@ export default function Notifications() {
           }}>
             {user?.name?.charAt(0).toUpperCase()}
           </div>
-          <div style={styles.userName}>{user?.name}</div>
-          <div style={styles.userRole}>{roleLabel}</div>
+          <div style={{ flex: 1 }}>
+            <div style={styles.userName}>{user?.name}</div>
+            <div style={styles.userEmail}>{user?.email}</div>
+          </div>
         </div>
 
         <nav style={styles.nav}>
-          <div style={styles.navLabel}>{tx('NAVIGATION', lang)}</div>
-          {[
-            { icon: '', label: tx('Dashboard', lang),        path: dashPath },
-            { icon: '', label: tx('Notifications', lang),    path: '/notifications', active: true },
-            { icon: '', label: tx('Public Dashboard', lang), path: '/public' },
-          ].map((l, i) => (
-            <div key={i} onClick={() => navigate(l.path)}
-              style={{ ...styles.navLink, ...(l.active ? styles.navLinkActive : {}) }}>
-              <span style={{ fontSize: 18 }}>{l.icon}</span>
-              <span>{l.label}</span>
-              {l.active && unread > 0 && <span style={styles.badge}>{unread}</span>}
-            </div>
-          ))}
+          <div style={styles.navLabel}>{tx('MY ACCOUNT', lang)}</div>
+          {(() => {
+            const navLinks = [];
+            if (user?.role === 'citizen') {
+              navLinks.push(
+                { icon: '', label: tx('My Dashboard', lang),      path: '/citizen/dashboard' },
+                { icon: '', label: tx('File Complaint', lang),    path: '/citizen/submit' },
+                { icon: '', label: tx('Track Complaint', lang),   path: '/citizen/track' },
+                { icon: '', label: tx('My Profile', lang),        path: '/citizen/profile' },
+                { icon: '', label: tx('Public Dashboard', lang),  path: '/public' }
+              );
+            } else if (user?.role === 'officer') {
+              navLinks.push(
+                { icon: '', label: tx('My Dashboard', lang),      path: '/officer/dashboard' },
+                { icon: '', label: tx('All Cases', lang),         path: '/officer/dashboard' },
+                { icon: '', label: tx('My Profile', lang),        path: '/officer/profile' },
+                { icon: '', label: tx('Public Dashboard', lang),  path: '/public' }
+              );
+            } else if (user?.role === 'admin') {
+              navLinks.push(
+                { icon: '', label: tx('Dashboard', lang),         path: '/admin/dashboard' },
+                { icon: '', label: tx('All Complaints', lang),    path: '/admin/complaints' },
+                { icon: '', label: tx('Officers', lang),          path: '/admin/officers' },
+                { icon: '', label: tx('Analytics', lang),         path: '/admin/analytics' },
+                { icon: '', label: tx('My Profile', lang),        path: '/admin/profile' },
+                { icon: '', label: tx('Public Dashboard', lang),  path: '/public' }
+              );
+            }
+            navLinks.push({ icon: '', label: tx('Notifications', lang), path: '/notifications', active: true });
+            
+            return navLinks.map((l, i) => (
+              <div key={i} onClick={() => navigate(l.path)}
+                style={{ ...styles.navLink, ...(l.active ? styles.navLinkActive : {}) }}>
+                <span style={{ fontSize: 18 }}>{l.icon}</span>
+                <span>{l.label}</span>
+                {l.active && unread > 0 && <span style={styles.badge}>{unread}</span>}
+              </div>
+            ));
+          })()}
         </nav>
 
         <div style={styles.sidebarBottom}>
@@ -338,6 +366,7 @@ const styles = {
   userAvatar:      { width: 52, height: 52, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 20, margin: '0 auto 10px' },
   userName:        { color: '#fff', fontWeight: 700, fontSize: 14 },
   userRole:        { color: 'rgba(255,255,255,0.5)', fontSize: 12, marginTop: 4 },
+  userEmail:       { color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 2 },
   nav:             { padding: '20px 12px', flex: 1 },
   navLabel:        { color: 'rgba(255,255,255,0.3)', fontSize: 10, fontWeight: 700, letterSpacing: 1.5, padding: '0 12px', marginBottom: 8 },
   navLink:         { display: 'flex', alignItems: 'center', gap: 12, padding: '11px 14px', color: 'rgba(255,255,255,0.65)', cursor: 'pointer', borderRadius: 8, marginBottom: 4, fontSize: 14 },

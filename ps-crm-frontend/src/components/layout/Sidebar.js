@@ -4,17 +4,23 @@ import { useAuth } from '../../context/AuthContext';
 const adminLinks = [
   { path: '/admin/dashboard', label: 'Dashboard', icon: '' },
   { path: '/admin/complaints', label: 'All Complaints', icon: '' },
+  { path: '/admin/profile', label: 'My Profile', icon: '👤' },
   { path: '/public', label: 'Public Dashboard', icon: '' },
 ];
 
 const officerLinks = [
   { path: '/officer/dashboard', label: 'My Complaints', icon: '' },
+  { path: '/officer/profile', label: 'My Profile', icon: '👤' },
+  { path: '/public', label: 'Public Dashboard', icon: '' },
 ];
 
 const citizenLinks = [
   { path: '/citizen/dashboard', label: 'My Dashboard', icon: '' },
-  { path: '/citizen/submit', label: 'Submit Complaint', icon: '' },
+  { path: '/citizen/submit', label: 'File Complaint', icon: '' },
   { path: '/citizen/track', label: 'Track Complaint', icon: '' },
+  { path: '/citizen/profile', label: 'My Profile', icon: '👤' },
+  { path: '/public', label: 'Public Dashboard', icon: '' },
+  { path: '/notifications', label: 'Notifications', icon: '' },
 ];
 
 export default function Sidebar() {
@@ -32,7 +38,7 @@ export default function Sidebar() {
         <div style={styles.logoIcon}>🏛️</div>
         <div>
           <div style={styles.logoText}>PS-CRM</div>
-          <div style={styles.logoSub}>Public Service CRM</div>
+          <div style={styles.logoSub}>{user?.role === 'admin' ? 'Admin Portal' : user?.role === 'officer' ? 'Officer Portal' : 'Citizen Portal'}</div>
         </div>
       </div>
 
@@ -41,15 +47,15 @@ export default function Sidebar() {
         <div style={styles.avatar}>
           {user?.name?.charAt(0).toUpperCase()}
         </div>
-        <div>
+        <div style={{ flex: 1 }}>
           <div style={styles.userName}>{user?.name}</div>
-          <div style={styles.userRole}>{user?.role?.toUpperCase()}</div>
+          <div style={styles.userEmail}>{user?.email}</div>
         </div>
       </div>
 
       {/* Navigation */}
       <nav style={styles.nav}>
-        <div style={styles.navLabel}>NAVIGATION</div>
+        <div style={styles.navLabel}>MY ACCOUNT</div>
         {links.map(link => (
           <div
             key={link.path}
@@ -65,12 +71,8 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Bottom */}
+      {/* Bottom - Logout */}
       <div style={styles.bottom}>
-        <div style={styles.link} onClick={() => navigate('/citizen/submit')}>
-          <span style={styles.linkIcon}></span>
-          <span>Submit Complaint</span>
-        </div>
         <div style={styles.logoutBtn} onClick={logout}>
           <span style={styles.linkIcon}></span>
           <span>Logout</span>
@@ -126,7 +128,7 @@ const styles = {
     flexShrink: 0,
   },
   userName: { color: '#fff', fontWeight: '600', fontSize: '14px' },
-  userRole: { color: 'rgba(255,255,255,0.5)', fontSize: '11px', marginTop: '2px' },
+  userEmail: { color: 'rgba(255,255,255,0.6)', fontSize: '12px', marginTop: '2px' },
   nav: { padding: '20px 12px', flex: 1 },
   navLabel: {
     color: 'rgba(255,255,255,0.3)',

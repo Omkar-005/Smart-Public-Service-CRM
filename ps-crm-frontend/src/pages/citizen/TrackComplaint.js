@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLang, tx } from '../../context/LanguageContext';
+import LanguageToggle from '../../components/layout/LanguageToggle';
 import API from '../../api';
 
 export default function TrackComplaint() {
@@ -226,22 +227,22 @@ ${lang === 'hi' ? 'लिंक' : 'Link'}: ${window.location.href}
             <div style={{ fontSize: 11, color: '#6B7FA3' }}>{tx('Smart Public Service CRM', lang)}</div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 9 }}>
+        <div style={{ display: 'flex', gap: 9, alignItems: 'center' }}>
+          <button style={styles.btnOutline} onClick={() => navigate(-1)}>
+            {tx('< Back', lang)}
+          </button>
+          <LanguageToggle style={{ ...styles.btnOutline, border: '1.5px solid #0F2557', color: '#0F2557', background: 'transparent' }} />
           <button style={styles.btnOutline} onClick={() => navigate('/citizen/submit')}>
-            {tx(' File a Complaint', lang)}
+            {tx(' File', lang)}
+          </button>
+          <button style={styles.btnOutline} onClick={() => navigate('/citizen/dashboard')}>
+            {tx(' Home', lang)}
           </button>
         </div>
       </header>
 
       <div style={styles.container}>
         <div style={styles.pageHead}>
-          <button 
-            style={styles.backBtn} 
-            onClick={() => navigate('/citizen')}
-            className="no-print"
-          >
-             {tx('Back', lang)}
-          </button>
           <h1 style={styles.pageTitle}>{tx(' Track Your Complaint', lang)}</h1>
           <p style={styles.pageSub}>{tx('Enter your complaint ID to see real-time status, photos, and progress report', lang)}</p>
         </div>
