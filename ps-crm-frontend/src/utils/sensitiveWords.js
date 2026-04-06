@@ -62,4 +62,5 @@ export const getSensitiveWordErrorMessage = (lang = 'en') => {
   return 'Your complaint contains inappropriate language. Please rephrase.';
 };
 
-export default { hasSensitiveWords, getSensitiveWordErrorMessage };
+const exported = { hasSensitiveWords, getSensitiveWordErrorMessage };
+export default exported;

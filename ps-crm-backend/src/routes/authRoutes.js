@@ -8,6 +8,7 @@ const {
   approveOfficer,
   rejectOfficer,
   assignRole,
+  updateProfile,
 } = require('../controllers/authController');
 const { protect, adminOnly } = require('../middleware/authMiddleware');
 
@@ -18,5 +19,6 @@ router.get('/officers/pending',  protect, adminOnly,    getPendingOfficers);
 router.put('/officers/:id/approve', protect, adminOnly, approveOfficer);
 router.put('/officers/:id/reject',  protect, adminOnly, rejectOfficer);
 router.put('/assign-role',       protect, adminOnly,    assignRole);
+router.put('/profile/:userId',   protect,               updateProfile);
 
 module.exports = router;

@@ -232,8 +232,6 @@ export const WARD_ZONE_MAP = {
   'Rajinder Nagar': 'South West Zone',
 
   // New Delhi Zone
-  'Inder Puri': 'New Delhi Zone',
-  'Rajinder Nagar': 'New Delhi Zone'
 };
 
 export const WARDS = Object.keys(WARD_ZONE_MAP);

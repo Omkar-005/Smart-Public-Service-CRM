@@ -157,6 +157,7 @@ export default function OfficerDashboard() {
           {[
             { icon: '', label: 'My Dashboard', path: '/officer/dashboard', active: true },
             { icon: '', label: 'All Cases', path: null, action: () => { setFilter('All'); complaintsRef.current?.scrollIntoView({ behavior: 'smooth' }); } },
+            { icon: '', label: 'My Profile', path: '/officer/profile' },
             { icon: '', label: 'Notifications', path: '/notifications' },
             { icon: '', label: 'Public Dashboard', path: '/public' },
           ].map((l, i) => (

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useLang, tx } from '../../context/LanguageContext';
 import { hasSensitiveWords, getSensitiveWordErrorMessage } from '../../utils/sensitiveWords';
+import LanguageToggle from '../../components/layout/LanguageToggle';
 import API from '../../api';
 import { WARD_ZONE_MAP, WARDS } from '../../data/wardInfo';
 
@@ -102,7 +103,7 @@ function VoiceInput({ value, onChange, placeholder, lang, multiline = false, sty
             style={inputStyle} />
       }
       <button type="button" onClick={listening ? stop : start} style={micStyle} title={listening ? 'Stop' : 'Click to speak'}>
-        {listening ? '' : ''}
+        {listening ? '🔴' : '🎤'}
       </button>
     </div>
   );
@@ -577,6 +578,21 @@ export default function SubmitComplaint() {
 }
 
 function Header({ navigate, lang }) {
+  const langToggleStyle = {
+    padding: '7px 14px',
+    borderRadius: 8,
+    border: '1.5px solid #0F2557',
+    color: '#0F2557',
+    background: 'transparent',
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    fontFamily: "'DM Sans', sans-serif"
+  };
+  
   return (
     <>
       <div style={{ background: '#0F2557', height: 34, display: 'flex', alignItems: 'center', padding: '0 40px', borderBottom: '3px solid #E8620A' }}>
@@ -592,11 +608,14 @@ function Header({ navigate, lang }) {
             <div style={{ fontSize: 11, color: '#6B7FA3' }}>{tx('Smart Public Service CRM', lang)}</div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 9 }}>
+        <div style={{ display: 'flex', gap: 9, alignItems: 'center' }}>
           <button style={{ padding: '7px 16px', borderRadius: 8, border: '1.5px solid #0F2557', color: '#0F2557', background: 'transparent', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
-            onClick={() => navigate(-1)}>{tx(' Back', lang)}</button>
+            onClick={() => navigate(-1)}>{tx('< Back', lang)}</button>
+          <LanguageToggle style={langToggleStyle} />
           <button style={{ padding: '7px 16px', borderRadius: 8, border: '1.5px solid #0F2557', color: '#0F2557', background: 'transparent', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
-            onClick={() => navigate('/citizen/track')}>{tx(' Track Complaint', lang)}</button>
+            onClick={() => navigate('/citizen/track-complaint')}>{tx('Track', lang)}</button>
+          <button style={{ padding: '7px 16px', borderRadius: 8, border: '1.5px solid #0F2557', color: '#0F2557', background: 'transparent', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+            onClick={() => navigate('/citizen/dashboard')}>{tx('Home', lang)}</button>
         </div>
       </header>
     </>

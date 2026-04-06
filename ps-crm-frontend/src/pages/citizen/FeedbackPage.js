@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLang, tx } from '../../context/LanguageContext';
+import LanguageToggle from '../../components/layout/LanguageToggle';
 import API from '../../api';
 
 // ── Real Platform Ratings from API ───────────────────────────────────────────
@@ -239,6 +240,21 @@ export default function FeedbackPage() {
 }
 
 function Header({ navigate, lang }) {
+  const langToggleStyle = {
+    padding: '7px 14px',
+    borderRadius: 8,
+    border: '1.5px solid #0F2557',
+    color: '#0F2557',
+    background: 'transparent',
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    fontFamily: "'DM Sans', sans-serif"
+  };
+  
   return (
     <>
       <div style={{ background: '#0F2557', height: 34, display: 'flex', alignItems: 'center', padding: '0 40px', borderBottom: '3px solid #E8620A' }}>
@@ -248,7 +264,7 @@ function Header({ navigate, lang }) {
       </div>
       <header style={{ background: '#fff', borderBottom: '1px solid #D8E2F0', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', boxShadow: '0 2px 12px rgba(15,37,87,0.08)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }} onClick={() => navigate('/')}>
-          <div style={{ width: 40, height: 40, borderRadius: 9, background: 'linear-gradient(135deg,#0F2557,#1565C0)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}></div>
+          <div style={{ width: 40, height: 40, borderRadius: 9, background: 'linear-gradient(135deg,#0F2557,#1565C0)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>🏛️</div>
           <div>
             <div style={{ fontFamily: "'Noto Serif',serif", fontSize: 16, fontWeight: 700, color: '#0F2557' }}>
               {tx('PS-CRM Gov Portal', lang)}
@@ -256,15 +272,12 @@ function Header({ navigate, lang }) {
             <div style={{ fontSize: 11, color: '#6B7FA3' }}>{tx('Smart Public Service CRM', lang)}</div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 9 }}>
+        <div style={{ display: 'flex', gap: 9, alignItems: 'center' }}>
           <button style={{ padding: '7px 16px', borderRadius: 8, border: '1.5px solid #0F2557', color: '#0F2557', background: 'transparent', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
-            onClick={() => navigate('/citizen/dashboard')}>
-            {tx(' My Dashboard', lang)}
-          </button>
-          <button style={{ padding: '7px 16px', borderRadius: 8, border: 'none', background: '#E8620A', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
-            onClick={() => navigate('/citizen/submit')}>
-            {tx(' New Complaint', lang)}
-          </button>
+            onClick={() => navigate(-1)}>{tx('< Back', lang)}</button>
+          <LanguageToggle style={langToggleStyle} />
+          <button style={{ padding: '7px 16px', borderRadius: 8, border: '1.5px solid #0F2557', color: '#0F2557', background: 'transparent', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+            onClick={() => navigate('/citizen/dashboard')}>{tx('🏠 Home', lang)}</button>
         </div>
       </header>
     </>
