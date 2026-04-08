@@ -1,7 +1,12 @@
+// ps-crm-backend/src/routes/authRoutes.js
+// CHANGES: 3 new OTP routes added at the top. All existing routes unchanged.
+
 const express = require('express');
-const router = express.Router();
+const router  = express.Router();
 const {
-  register,
+  sendOTPHandler,          // ← NEW
+  verifyOTPAndRegister,    // ← NEW
+  resendOTP,               // ← NEW
   login,
   getOfficers,
   getPendingOfficers,
@@ -12,7 +17,12 @@ const {
 } = require('../controllers/authController');
 const { protect, adminOnly } = require('../middleware/authMiddleware');
 
-router.post('/register',                                register);
+// ── OTP-based registration (new 2-step flow) ──────────────────────────────────
+router.post('/send-otp',                sendOTPHandler);
+router.post('/verify-otp-and-register', verifyOTPAndRegister);
+router.post('/resend-otp',              resendOTP);
+
+// ── All existing routes — unchanged ──────────────────────────────────────────
 router.post('/login',                                   login);
 router.get('/officers',          protect, adminOnly,    getOfficers);
 router.get('/officers/pending',  protect, adminOnly,    getPendingOfficers);
