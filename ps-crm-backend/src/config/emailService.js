@@ -1,3 +1,6 @@
+// ps-crm-backend/src/config/emailService.js
+// FULL FILE — your existing code unchanged, sendOTPEmail added at the bottom
+
 const nodemailer = require('nodemailer');
 
 const getTransporter = () => {
@@ -79,7 +82,7 @@ const urgencyBadge = (urgency) => {
   return `<span style="background:${colors[urgency] || '#666'};color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:700;">${urgency}</span>`;
 };
 
-// ── Track button — links using complaintNumber ────────────────────────────────
+// ── Track button ──────────────────────────────────────────────────────────────
 const trackButton = (complaintNumber) => `
 <div style="text-align:center;margin:24px 0 8px;">
   <a href="http://localhost:3000/citizen/track?id=${complaintNumber}"
@@ -97,7 +100,7 @@ const loginButton = () => `
   </a>
 </div>`;
 
-// ── Format complaintNumber for display (fallback to last-8 of _id) ────────────
+// ── Format complaintNumber for display ────────────────────────────────────────
 const displayId = (complaint) =>
   complaint.complaintNumber || `CMP-${complaint._id.toString().slice(-8).toUpperCase()}`;
 
@@ -142,7 +145,7 @@ const sendComplaintConfirmation = async (complaint) => {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 2. Status Update — smart email based on new status
+// 2. Status Update
 // ─────────────────────────────────────────────────────────────────────────────
 const sendStatusUpdate = async (complaint) => {
   const status = complaint.status;
@@ -372,6 +375,43 @@ const sendOfficerRejectionEmail = async (officer, reason) => {
   }
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// 7. OTP Email  ← NEW
+// ─────────────────────────────────────────────────────────────────────────────
+const sendOTPEmail = async (email, otp, name = '') => {
+  try {
+    const body = `
+      <p style="color:#333;font-size:15px;margin:0 0 16px;">Dear <strong>${name || 'User'}</strong>,</p>
+      <p style="color:#555;font-size:14px;line-height:1.6;margin:0 0 24px;">
+        Use the OTP below to complete your registration on PS-CRM.
+        This code is valid for <strong>10 minutes</strong> and can only be used once.
+      </p>
+      <div style="background:#f0f4f8;border-radius:12px;padding:28px;text-align:center;margin-bottom:24px;border:1px solid #d8e2f0;">
+        <p style="color:#3A4E70;font-size:12px;font-weight:700;letter-spacing:2px;margin:0 0 12px;text-transform:uppercase;">Your Verification Code</p>
+        <div style="font-size:42px;font-weight:800;letter-spacing:14px;color:#0F2557;font-family:'Courier New',monospace;">
+          ${otp}
+        </div>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin:16px 0;">
+        <p style="margin:0;font-size:13px;color:#92400e;">
+          ⚠️ Do not share this OTP with anyone. PS-CRM will never ask for your OTP.
+        </p>
+      </div>
+      <p style="color:#aaa;font-size:12px;margin:16px 0 0;">If you did not request this, you can safely ignore this email.</p>`;
+
+    await getTransporter().sendMail({
+      from:    `"PS-CRM System" <${process.env.EMAIL_USER}>`,
+      to:      email,
+      subject: `🔐 Your PS-CRM Verification Code: ${otp}`,
+      html:    htmlWrapper('Email Verification', '#0F2557', '🔐', body),
+    });
+    console.log(`[Email] OTP sent to ${email}`);
+  } catch (error) {
+    console.error('[Email Error] OTP:', error.message);
+    throw error;
+  }
+};
+
 module.exports = {
   sendComplaintConfirmation,
   sendStatusUpdate,
@@ -379,4 +419,5 @@ module.exports = {
   sendOfficerPendingEmail,
   sendOfficerApprovalEmail,
   sendOfficerRejectionEmail,
+  sendOTPEmail,              // ← NEW export
 };
