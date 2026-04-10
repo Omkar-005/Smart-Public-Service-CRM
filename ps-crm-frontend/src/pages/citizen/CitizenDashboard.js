@@ -55,7 +55,7 @@ function ComplaintModal({ complaint: c, lang, onClose }) {
               </span>
             </div>
           </div>
-          <button style={mStyles.closeBtn} onClick={onClose}></button>
+          <button style={mStyles.closeBtn} onClick={onClose}>✕</button>
         </div>
 
         <div style={mStyles.body}>
@@ -384,7 +384,7 @@ export default function CitizenDashboard() {
           {[
             { label: 'File a Complaint', sub: 'Report a new issue',       path: '/citizen/submit',    color: '#E8620A' },
             { label: 'Track Status',     sub: 'Check complaint status',   path: '/citizen/track',     color: '#0F2557' },
-            { label: 'Give Feedback',    sub: 'Rate resolved complaints', path: '/citizen/dashboard', color: '#1B7A3E' },
+            { label: 'Give Feedback', sub: 'Rate resolved complaints', path: '/citizen/feedback', color: '#1B7A3E' },
             { label: 'Public Report',    sub: 'View transparency data',   path: '/public',            color: '#1565C0' },
           ].map((a, i) => (
             <div key={i} style={styles.actionCard} onClick={() => navigate(a.path)}>
