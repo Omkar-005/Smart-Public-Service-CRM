@@ -45,6 +45,7 @@ function AppContent() {
         {/* Citizen */}
         <Route path="/citizen/dashboard" element={<ProtectedRoute roles={['citizen']}><CitizenDashboard /></ProtectedRoute>} />
         <Route path="/citizen/profile" element={<ProtectedRoute roles={['citizen']}><CitizenProfilePage /></ProtectedRoute>} />
+        <Route path="/citizen/feedback" element={<ProtectedRoute roles={['citizen']}><FeedbackPage /></ProtectedRoute>} />
         <Route path="/citizen/feedback/:id" element={<ProtectedRoute roles={['citizen']}><FeedbackPage /></ProtectedRoute>} />
 
         {/* Admin */}
